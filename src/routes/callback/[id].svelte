@@ -28,7 +28,56 @@
       loading = false;
     })
   });
+
+  let currentPage = "login";
+  let headerText = "please, login";
+  let containerLoading = false;
+  let data = {};
+
+  function proceed(type) {
+    containerLoading = true;
+    if (type == "login") {
+      fetch(`${application.url}/user/login`, {
+        method: 'POST',
+        body: JSON.stringify({ username: data.username, password: "0000" }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((data) => data.json())
+      .then((data) => {
+        // Обрабатываем данные
+        if (data.message == "User not found") {
+          // Регистрация пользователя
+          currentPage = "register";
+          headerText = "please, write your email"
+        } else {
+          // Пользователю надо вписать пинкод
+          currentPage = "pincode";
+          headerText = "write your pincode";
+        };
+        setTimeout(() => {
+          containerLoading = false;
+        }, 250);
+      })
+    }
+  }
 </script>
+
+<style>
+  .pincode {
+    width: 35px; 
+    text-align: center; 
+    height: 50px; 
+    border: 0; 
+    border-bottom: 2px solid rgba(0,0,0,0.3); 
+    border-radius: 2px 2px 0 0; 
+    font-size: 2em; 
+    transition: background-color 0.3s, color 0.3s, opacity 0.3s; 
+    cursor: default; 
+    user-select: none;
+  }
+</style>
 
 <!-- Две отдельные странички:
   1. Запись не найдена;
@@ -49,16 +98,72 @@
       </div>
     </div>
   { :else }
-    <div class="w-2/6 md:bg-white md:rounded-lg md:shadow-xl" style="min-width: max-content;">
-      <div class="p-2 md:p-8">
-        <p class="text-xl pb-2">please, login</p>
-        <div class="items-center text-center">
-          <input id="username" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="username">
-          <button class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-            proceed
-          </button>
+      <div class="w-2/6 md:bg-white md:rounded-lg md:shadow-xl relative" style="min-width: max-content;">
+        
+        { #if containerLoading }
+          <div style="z-index: 999;" class="w-full h-full bg-white absolute flex justify-center items-center">
+            <Spinner />
+          </div>
+        { /if }
+        
+        <div class="p-2 md:p-8">
+          <p class="text-xl pb-2">{headerText}</p>
+          { #if currentPage == "login" }
+            <div class="items-center text-center">
+              <input bind:value={data.username} id="username" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="username">
+              <button on:click={(e) => {
+                proceed("login");
+              }} class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                proceed
+              </button>
+            </div>
+          { :else if currentPage == "register" } 
+            <div class="items-center text-center">
+              <input bind:value={data.email} id="email" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="email">
+              <button on:click={(e) => {
+                proceed("regitser");
+              }} class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                register
+              </button>
+
+              <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
+                containerLoading = true;
+                
+                currentPage = "login";
+                headerText = "please, login";
+              
+                setTimeout(() => {
+                  containerLoading = false;
+                }, 350)
+              }}>fuck go back</p>
+            </div>
+          { :else if currentPage == "pincode" }
+            <div class="items-center text-center">
+
+              <div class="items-center text-center">
+                <input type="text" class="m-2 pincode">
+                <input type="text" class="m-2 pincode">
+                <input type="text" class="m-2 pincode">
+                <input type="text" class="m-2 pincode">
+              </div>
+
+              <button class="m-6 bg-transparent hover:bg-gray-900 text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                login
+              </button>
+
+              <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
+                containerLoading = true;
+                
+                currentPage = "login";
+                headerText = "please, login";
+              
+                setTimeout(() => {
+                  containerLoading = false;
+                }, 350)
+              }}>fuck go back</p>
+            </div>
+          { /if }
         </div>
       </div>
-    </div>
   { /if }
 </div>
