@@ -8,18 +8,18 @@
 <script>
   import { goto } from "@sapper/app";
   
-  let applicationSlug = "acc"
+  let applicationSlug = "wvees"
 
   let serviceList = [
+    { 
+      slug: "wvees",
+      name: "Home",
+      url: "/",
+    },
     { 
       slug: "rptr",
       name: "Raptor",
       url: "https://3000-dc796a6f-35b6-40da-90d8-e230ed30118c.ws-eu01.gitpod.io/",
-    },
-    { 
-      slug: "acc",
-      name: "Account",
-      url: "https://google.com/",
     }
   ];
 

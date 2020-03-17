@@ -65,6 +65,18 @@
 </script>
 
 <style>
+  .logotype {
+    font-family: "Gotham-Thin", sans-serif
+  }
+
+  .line_okay {
+    background: linear-gradient(180deg, rgba(147,100,187,1) 0%, rgba(234,26,126,1) 100%);
+  }
+
+  /* .line_error {
+    background: linear-gradient(180deg, #FF7043 0%, #EF5350 100%);
+  } */
+
   .pincode {
     width: 35px; 
     text-align: center; 
@@ -107,6 +119,41 @@
         { /if }
         
         <div class="p-2 md:p-8">
+          <!-- Logo -->
+
+          <!-- MOBILE VIEW -->
+          <div class="md:hidden">
+            <div class="logotype w-full mb-4 md:mb-6 flex justify-center items-center">
+              <p class="logotype text-3xl">Auth</p>
+
+              <img class="mx-4" src="icons/x.svg" alt="X">
+
+              <img src="icons/daddy.png" style="width: 10vw;" class="rounded-full" alt="Company avatar">
+            </div>
+
+            <div class="max-w-sm text-center mb-6 md:mb-12" style="font-size: 1.025em;">
+              <p>This application wants to access some data from your account. Sign in to continue.</p>
+            </div>
+          </div>
+
+          <!-- DESKTOP VIEW -->
+          <div class="hidden md:block">
+            <div class="logotype w-full mb-4 md:mb-6 flex justify-center items-center">
+              <p class="logotype text-3xl" style="font-weight: 600;">Wavees</p>
+              <div id="line" class="logotype line_okay ml-2 mr-2" style="width: 2.2px; height: 2.2em; backgroundColor: #424242"></div>
+              <p class="logotype text-3xl">Auth</p>
+
+              <img class="mx-4" src="icons/x.svg" alt="X">
+
+              <img src="icons/daddy.png" style="width: 4vw;" class="rounded-full" alt="Company avatar">
+            </div>
+
+            <div class="max-w-sm text-center mb-6 md:mb-12" style="font-size: 1.025em;">
+              <p>This application wants to access some data from your account. Sign in to continue.</p>
+            </div>
+          </div>
+
+          <!-- Container -->
           <p class="text-xl pb-2">{headerText}</p>
           { #if currentPage == "login" }
             <div class="items-center text-center">
@@ -163,6 +210,10 @@
               }}>fuck go back</p>
             </div>
           { /if }
+
+          <div class="w-full text-center">
+            <p class="mt-2 md:mt-6">By continuing, you agree to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
+          </div>
         </div>
       </div>
   { /if }
