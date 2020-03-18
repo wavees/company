@@ -35,6 +35,8 @@
       serviceList[index] = entry;
     }
   });
+
+  export let style = "white";
 </script>
 
 <!-- 

@@ -124,7 +124,7 @@
           <!-- MOBILE VIEW -->
           <div class="md:hidden">
             <div class="logotype w-full mb-4 md:mb-6 flex justify-center items-center">
-              <p class="logotype text-3xl">Auth</p>
+              <p class="logotype text-3xl">Wavees</p>
 
               <img class="mx-4" src="icons/x.svg" alt="X">
 
