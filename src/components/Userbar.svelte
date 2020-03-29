@@ -7,19 +7,24 @@
 
 <script>
   import { goto } from "@sapper/app";
-  
-  let applicationSlug = "wvees"
+
+  export let applicationSlug = "home";
 
   let serviceList = [
-    { 
-      slug: "wvees",
+    {
+      slug: "home",
       name: "Home",
-      url: "/",
+      url: "/"
     },
     { 
-      slug: "rptr",
-      name: "Raptor",
-      url: "https://3000-dc796a6f-35b6-40da-90d8-e230ed30118c.ws-eu01.gitpod.io/",
+      slug: "dev",
+      name: "Developers",
+      url: "/developers",
+    },
+    { 
+      slug: "acc",
+      name: "Account",
+      url: "/account",
     }
   ];
 
@@ -35,8 +40,6 @@
       serviceList[index] = entry;
     }
   });
-
-  export let style = "white";
 </script>
 
 <!-- 
@@ -77,7 +80,7 @@
    -->
   <div class="flex flex-row items-center">
     <button class="mx-4 md:mx-6 flex flex-row items-center">
-      <p class="mx-2">SniperFox</p>
+      <p class="mx-2">Account</p>
       <img src="./icons/chevron-down.svg" alt="Arrow down">
     </button>
 
