@@ -1,4 +1,5 @@
 <script>
+  import { fade } from 'svelte/transition';
   import Userbar from "../../components/Userbar.svelte";
 </script>
 
@@ -20,7 +21,7 @@
   <Userbar applicationSlug="dev" />
 
 	<main style="overflow: auto;">
-    <div style="overflow-y: scroll; width: 100%; height: 100vh;" class="bg-gray-900">
+    <div in:fade style="overflow-y: scroll; width: 100%; height: 100vh;" class="bg-gray-900">
       <!-- HEADER -->
       <div class="w-full header_links bg-gray-800 py-4 px-2 md:px-10 text-white flex flex-row justify-between items-center">
         <div class="header flex flex-row justify-center items-center">

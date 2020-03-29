@@ -1,5 +1,7 @@
 <script>
   // Импортим модули
+  import { fade } from 'svelte/transition';
+
   import { stores } from "@sapper/app";
   import { goto } from "@sapper/app";
   import { onMount } from "svelte";
