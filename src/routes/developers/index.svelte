@@ -1,6 +1,50 @@
 <script>
+  import { onMount } from "svelte";
+
   import { fade } from 'svelte/transition';
   import Userbar from "../../components/Userbar.svelte";
+
+  import Cookie from 'cookie-universal'
+  const cookies = Cookie();
+
+  let userExists = null;
+
+  function updateAccount() {
+    if (cookies.get('token')) {
+      userExists = true;
+    } else {
+      userExists = false;
+    }
+  };
+
+  function proceed(type) {
+    if (type == "signup") {
+      fetch(`${application.url}/callback`,
+      {
+        method: "POST",
+        body: JSON.stringify({ url: "wvees.herokuapp.com:3000/auth" }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.url != null) {
+          window.location.href = `${response.url}`;
+        } else {
+          console.log("ERROR");
+        }
+      });
+    }
+  }
+
+  onMount(() => {
+    updateAccount();
+
+    setInterval(() => {
+      updateAccount();
+    }, 2000);
+  });
 </script>
 
 <svelte:head>
@@ -33,7 +77,15 @@
         <a class="mx-4" href="/">Features</a>
         <a class="mx-4" href="/">Services</a>
         <a class="mx-4" href="/">Documentation</a>
-        <a class="mx-4 flex flex-row items-center" href="/"><img class="rounded-full mx-4" style="height: 2.1em;" src="./icons/daddy.png" alt="Avatar">My Dashboard</a>
+
+        { #if userExists }
+        <!-- <img class="rounded-full mx-4" style="height: 2.1em;" src="./icons/daddy.png" alt="Avatar"> -->
+          <p class="mx-4 flex flex-row items-center">My Dashboard</p>
+        { :else }
+          <p on:click={(e) => {
+            proceed("signup");
+          }} class="mx-4 flex flex-row items-center" style="cursor: pointer;">Sign up</p>
+        { /if }
       </div>
 
       <!-- HERO -->
