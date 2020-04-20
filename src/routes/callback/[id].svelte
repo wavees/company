@@ -7,12 +7,16 @@
   import { onMount } from "svelte";
   import { api } from '../../config/global.js';
 
+  import Cookie from 'cookie-universal'
+  const cookies = Cookie();
+
   import Spinner from "../../components/Spinner.svelte";
   import Userbar from "../../components/Userbar.svelte";
   // import Userbar from "../../components/Userbar.svelte";
   // import { fade } from 'svelte/transition';
 
   const application = {
+    defaultAvatar: $api.defaultAvatar,
     url: $api.url
   };
 
@@ -27,37 +31,79 @@
     error: "NotFound"
   };
 
-  onMount(() => {
-    fetch(`${application.url}/callback/link/${id}`)
-    .then((data) => data.json())
-    .then((data) => {
-      callback = data;
-      loading.state = false;
-    })
-  });
-
   let currentPage = "login";
-  let headerText = "please, login";
+  let headerText = "Enter your email";
   let containerLoading = false;
   let data = {};
+  let user = {};
+
+  onMount(() => {
+    fetch(`${application.url}/callback/${id}`)
+    .then((response) => response.json())
+    .then((response) => {
+      callback = response;
+
+      updateAccount();
+    });
+  });
+
+  function updateAccount() {
+    // Некоторые проверочки...
+    if (cookies.get('token')) {
+      fetch(`${application.url}/user/${cookies.get('token')}`)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error == null) {
+          currentPage = "redirect";
+          user = response;
+
+          data.email = user.email;
+
+          loading.state = false;
+        } else {
+          loading.state = false;
+        }
+      });
+    } else {
+      loading.state = false;
+    };
+
+    if (cookies.get('login-email')) {
+      if (currentPage == "login") {
+        fetch(`${application.url}/user/check/${cookies.get('login-email')}`)
+        .then((response) => response.json())
+        .then((response) => {
+          data.email = cookies.get('login-email');
+
+          if (response.exists) {
+            data.exists = true;
+
+            currentPage = "pincode";
+            headerText = "Write your pincode";
+          } else {
+            data.exists = false;
+              
+            currentPage = "register";
+            headerText = "Write your username";
+          }
+        })
+      }
+    }
+  };
 
   function proceed(type) {
     containerLoading = true;
     if (type == "login") {
-      fetch(`${application.url}/user/login`, {
-        method: 'POST',
-        body: JSON.stringify({ username: data.username, password: "0000" }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then((data) => data.json())
-      .then((data) => {
+      fetch(`${application.url}/user/check/${data.email}`)
+      .then((response) => response.json())
+      .then((response) => {
         // Обрабатываем данные
-        if (data.message == "User not found") {
+        cookies.set('login-email', data.email);
+
+        if (response.exists == false) {
           // Регистрация пользователя
           currentPage = "register";
-          headerText = "please, write your email"
+          headerText = "Write your username"
         } else {
           // Пользователю надо вписать пинкод
           currentPage = "pincode";
@@ -67,23 +113,93 @@
           containerLoading = false;
         }, 250);
       })
-    }
+      .catch((error) => {
+        console.log(error);
+        console.log("ERROR");
+      })
+    } else if (type == "register") {
+      fetch(`${application.url}/user/register`, {
+        method: "POST",
+        body: JSON.stringify({ email: data.email, username: data.username }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((data) => data.json())
+      .then((data) => {
+        // Обрабатываем полученный ответ...
+        if (data.error) {
+          switch (data.error) {
+            case "WrongEmail":
+              console.log("WRONG EMAIL");
+
+              break;
+            case "ServerError":
+
+              console.log("SERVER ERROR");
+              break;
+
+            default:
+              break;
+          }
+        } else {
+          currentPage = "pincode";
+          headerText = "check email and write your pincode";
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    } else if (type == "pincode") {
+      let inputs = document.getElementsByClassName("pincode");
+      let pincode = [];
+
+      for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].value != "") pincode.push(inputs[i].value);
+      }
+
+      fetch(`${application.url}/user/login`, {
+        method: "POST",
+        body: JSON.stringify({ email: data.email, pincode: pincode.join("") }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((data) => data.json())
+      .then((data) => {
+        if (data.error) {
+          if (data.error == "InvalidPassword") {
+            headerText = "invalid pincode. Try again"
+          };
+        } else {
+          // Сохраняем это всё в сессию...
+          cookies.set('token', data.token)
+
+          currentPage = "redirect";
+          headerText = "read carefully";
+        };
+
+        setTimeout(() => {
+          containerLoading = false;
+        }, 250);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    } else if (type == "redirect") {
+      fetch(`${application.url}/callback/finish/${id}/${cookies.get('token')}`)
+      .then((response) => response.json())
+      .then((response) => {
+        window.location.href = `http://${callback.url}/?token=${response.token}`;
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    };
   }
 </script>
 
 <style>
-  .logotype {
-    font-family: "Gotham-Thin", sans-serif
-  }
-
-  .line_okay {
-    background: linear-gradient(180deg, rgba(147,100,187,1) 0%, rgba(234,26,126,1) 100%);
-  }
-
-  /* .line_error {
-    background: linear-gradient(180deg, #FF7043 0%, #EF5350 100%);
-  } */
-
   .pincode {
     width: 35px; 
     text-align: center; 
@@ -104,7 +220,7 @@
  -->
 
 <div style="overflow: hidden; width: 100%; height: 100vh;">
-  <Userbar applicationSlug="acc" />
+  <!-- <Userbar applicationSlug="acc" /> -->
 
 	<main style="overflow: auto;">
     { #if loading.state }
@@ -140,8 +256,18 @@
             <div class="p-2 md:p-8">
               <!-- Logo -->
 
-              <!-- MOBILE VIEW -->
-              <div class="md:hidden">
+              <div class="w-full flex justify-center items-center">
+                { #if data.email != null }
+                  { #if currentPage != "login" }
+                    <div class="mt-2 w-full flex-col flex justify-center items-center">
+                      <div class="rounded-full" style="background-image: url({user.avatar == null ? application.defaultAvatar : user.avatar}); background-size: cover; background-position: center center; width: 8vw; height: 8vw;" alt="Avatar"></div>
+                      <p class="mt-2">{data.email}</p>
+                    </div>
+                  { /if }
+                { /if }
+              </div>
+
+              <!-- <div class="md:hidden">
                 <div class="logotype w-full mb-4 md:mb-6 flex justify-center items-center">
                   <p class="logotype text-3xl">Wavees</p>
 
@@ -155,7 +281,7 @@
                 </div>
               </div>
 
-              <!-- DESKTOP VIEW -->
+              DESKTOP VIEW
               <div class="hidden md:block">
                 <div class="logotype w-full mb-4 md:mb-6 flex justify-center items-center">
                   <p class="logotype text-3xl" style="font-weight: 600;">Wavees</p>
@@ -168,40 +294,55 @@
                 </div>
 
                 <div class="max-w-sm text-center mb-6 md:mb-12" style="font-size: 1.025em;">
-                  <p>This application wants to access some data from your account. Sign in to continue.</p>
+                  <h1 class="text-2xl">{headerText}</h1>
+                  <p>to continue to <a href="google.com" class="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">{callback.name == null ? "Unknown Application" : callback.name}</a></p>
                 </div>
-              </div>
+              </div> -->
+              { #if currentPage != "redirect" }
+                <div class="max-w-sm text-center mb-6 md:mb-12" style="font-size: 1.025em;">
+                  <h1 class="text-2xl">{headerText}</h1>
+                  <p>to continue to <a href="google.com" class="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">{callback.name == null ? "Unknown Application" : callback.name}</a></p>
+                </div>
+              { /if }
 
               <!-- Container -->
-              <p class="text-xl pb-2">{headerText}</p>
               { #if currentPage == "login" }
-                <div class="items-center text-center">
-                  <input bind:value={data.username} id="username" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="username">
-                  <button on:click={(e) => {
-                    proceed("login");
-                  }} class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    proceed
-                  </button>
-                </div>
-              { :else if currentPage == "register" } 
                 <div class="items-center text-center">
                   <input bind:value={data.email} id="email" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="email">
                   <button on:click={(e) => {
-                    proceed("regitser");
+                    proceed("login");
                   }} class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    register
+                    Continue
                   </button>
 
-                  <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
-                    containerLoading = true;
+                  <div class="w-full text-center">
+                    <p class="mt-2 md:mt-6">By continuing, you agreeing to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
+                  </div>
+                </div>
+              { :else if currentPage == "register" } 
+                <div class="items-center text-center">
+                  <input bind:value={data.username} id="username" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="username">
+                  <button on:click={(e) => {
+                    proceed("register");
+                  }} class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                    Register
+                  </button>
+
+                  <div class="w-full flex justify-center">
+                    <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
+                      containerLoading = true;
+                      
+                      currentPage = "login";
+                      headerText = "please, login";
                     
-                    currentPage = "login";
-                    headerText = "please, login";
-                  
-                    setTimeout(() => {
-                      containerLoading = false;
-                    }, 350)
-                  }}>fuck go back</p>
+                      cookies.remove('login-email');
+                      updateAccount();
+
+                      setTimeout(() => {
+                        containerLoading = false;
+                      }, 350)
+                    }}>Go back</p>
+                  </div>
                 </div>
               { :else if currentPage == "pincode" }
                 <div class="items-center text-center">
@@ -213,28 +354,118 @@
                     <input type="text" class="m-2 pincode">
                   </div>
 
-                  <button class="m-6 bg-transparent hover:bg-gray-900 text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    login
+                  <button on:click={(e) =>{
+                    proceed("pincode");
+                  }} class="my-4 bg-transparent hover:bg-gray-900 text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                    Login
                   </button>
 
-                  <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
-                    containerLoading = true;
+                  <div class="w-full flex justify-between">
+                    <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
+                      containerLoading = true;
+                      
+                      currentPage = "login";
+                      headerText = "please, login";
                     
-                    currentPage = "login";
-                    headerText = "please, login";
-                  
-                    setTimeout(() => {
-                      containerLoading = false;
-                    }, 350)
-                  }}>fuck go back</p>
+                      cookies.remove('login-email');
+                      updateAccount();
+
+                      setTimeout(() => {
+                        containerLoading = false;
+                      }, 350)
+                    }}>Use different account</p>
+
+                    <p class="text-dark" style="cursor: pointer;">
+                      Forgot pincode?
+                    </p>
+                  </div>
+                </div>
+              { :else if currentPage == "redirect" }
+                <div class="mt-4 items-center text-center">
+                  <div>
+                    This site <a href="{callback.url}" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">({callback.url})</a> will have these permissions:
+
+                    <!-- Permissions container -->
+                    <div class="w-full justify-start">
+                      <div class="flex my-2">
+                        <img src="icons/check.svg" alt="Agree">
+                        <p class="mx-4">See your Email</p>
+                      </div>
+
+                      <div class="flex my-2">
+                        <img src="icons/check.svg" alt="Agree">
+                        <p class="mx-4">See your Avatar</p>
+                      </div>
+
+                      <div class="flex my-2">
+                        <img src="icons/check.svg" alt="Agree">
+                        <p class="mx-4">Modify Application's storage</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button on:click={(e) => {
+                    proceed("redirect");
+                  }} class="my-4 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                    I agree
+                  </button>
+
+                  <!-- <div class="text-sm w-full text-center"> -->
+                    <!-- <p>This site is not part of the Wavees Group network.</p> -->
+                  <!-- </div> -->
+
+                  <div class="mt-4 w-full flex justify-between">
+                    <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
+                      containerLoading = true;
+                      
+                      currentPage = "login";
+                      headerText = "please, login";
+                    
+                      cookies.remove('token');
+                      cookies.remove('login-email');
+                      
+                      updateAccount();
+
+                      setTimeout(() => {
+                        containerLoading = false;
+                      }, 350)
+                    }}>Use different account</p>
+
+                    <p on:click={(e) =>{
+                      goto('/');
+                    }} class="text-dark" style="cursor: pointer;">
+                      Go to the homepage
+                    </p>
+                  </div>
                 </div>
               { /if }
-
-              <div class="w-full text-center">
-                <p class="mt-2 md:mt-6">By continuing, you agree to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
-              </div>
             </div>
           </div>
+
+          { #if currentPage == "register" }
+            <div class="hidden lg:flex flex-col mx-6 max-w-xs text-sm">
+              <h1 class="mb-4 text-xl font-semibold">Register to get access to:</h1>
+
+              <div class="my-4">
+                <div class="flex">
+                  <img src="icons/logo/bokkr.svg" style="width: 2.1em;" alt="bokkr-logo">
+                  <h1 class="ml-2 text-lg font-bold">bokkr</h1>
+                </div>
+
+                <p>bokkr - experimental site only for approved comics, books and so on. A lot of experiments and a lot of unforgetable adventures!</p>
+              </div>
+
+              <div class="my-4">
+                <div class="flex items-center">
+                  <img src="icons/logo/pigeon.svg" style="width: 1.8em;" alt="pigeon logo">
+                  <h1 class="ml-2 text-lg font-bold">pigeon messenger</h1>
+                </div>
+
+                <p>Pigeon Messenger - is a messenger to rule them all! Now you needen't to switch between different web-messengers. Now all your chats will be in one place, without any switching!</p>
+              </div>
+            </div>
+          { /if }
+
       { :else }
         <div style="width: 100%; height: 100vh" class="flex flex-col justify-center items-center">
           <p class="text-2xl text-semibold">Uncaught error</p>
