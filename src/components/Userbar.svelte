@@ -51,7 +51,7 @@
       fetch(`${application.url}/callback`,
       {
         method: "POST",
-        body: JSON.stringify({ url: "wvees.herokuapp.com:3000/auth" }),
+        body: JSON.stringify({ url: "wvees.herokuapp.com/auth" }),
         headers: {
           'Content-Type': 'application/json'
         }
