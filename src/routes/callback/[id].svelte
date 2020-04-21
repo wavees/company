@@ -37,6 +37,8 @@
   let data = {};
   let user = {};
 
+  let error = null;
+
   onMount(() => {
     fetch(`${application.url}/callback/${id}`)
     .then((response) => response.json())
@@ -65,30 +67,34 @@
         }
       });
     } else {
-      loading.state = false;
-    };
+      if (cookies.get('login-email')) {
+        if (currentPage == "login") {
+          fetch(`${application.url}/user/check/${cookies.get('login-email')}`)
+          .then((response) => response.json())
+          .then((response) => {
+            data.email = cookies.get('login-email');
 
-    if (cookies.get('login-email')) {
-      if (currentPage == "login") {
-        fetch(`${application.url}/user/check/${cookies.get('login-email')}`)
-        .then((response) => response.json())
-        .then((response) => {
-          data.email = cookies.get('login-email');
+            if (response.exists) {
+              data.exists = true;
 
-          if (response.exists) {
-            data.exists = true;
+              currentPage = "pincode";
+              headerText = "Write your pincode";
+            
+              loading.state = false;
+            } else {
+              data.exists = false;
+                
+              currentPage = "register";
+              headerText = "Write your username";
 
-            currentPage = "pincode";
-            headerText = "Write your pincode";
-          } else {
-            data.exists = false;
-              
-            currentPage = "register";
-            headerText = "Write your username";
-          }
-        })
+              loading.state = false;
+            }
+          })
+        }
+      } else {
+        loading.state = false;
       }
-    }
+    };
   };
 
   function proceed(type) {
@@ -131,17 +137,21 @@
         if (data.error) {
           switch (data.error) {
             case "WrongEmail":
-              console.log("WRONG EMAIL");
+              error = "Wrong email, please, try again.";
 
               break;
             case "ServerError":
-
-              console.log("SERVER ERROR");
+              error = "ServerError. Please, try again.";
+              
               break;
 
             default:
               break;
-          }
+          };
+          
+          setTimeout(() => {
+            containerLoading = false;
+          }, 250);
         } else {
           currentPage = "pincode";
           headerText = "check email and write your pincode";
@@ -253,6 +263,34 @@
               </div>
             { /if }
             
+            { #if error != null }
+              <div style="z-index: 999;" class="w-full h-full flex-col bg-white absolute flex justify-center items-center">
+                <p>{error}</p>
+
+                <div class="w-full flex items-center justify-center">
+                  <!-- <p class="m-6 w-full text-dark" style="cursor: pointer;">Report bug</p> -->
+                  
+                  <button on:click={(e) => {
+                    containerLoading = true;
+                      
+                    currentPage = "login";
+                    headerText = "please, login";
+                    
+                    error = null;
+
+                    cookies.remove('login-email');
+                    updateAccount();
+
+                    setTimeout(() => {
+                      containerLoading = false;
+                    }, 350)
+                  }} class="m-6 w-full bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                    Back to Login
+                  </button>
+                </div>
+              </div>
+            { /if }
+
             <div class="p-2 md:p-8">
               <!-- Logo -->
 
@@ -309,27 +347,27 @@
               { #if currentPage == "login" }
                 <div class="items-center text-center">
                   <input bind:value={data.email} id="email" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="email">
-                  <button on:click={(e) => {
-                    proceed("login");
-                  }} class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    Continue
-                  </button>
+                  
+                  <div class="flex w-full justify-center items-center">
+                    <p class="m-6 text-dark w-full" style="cursor: pointer;" on:click={(e) => {
+                    }}>Last used emails</p>
+                    <button on:click={(e) => {
+                      proceed("login");
+                    }} class="m-6 w-full bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                      Continue
+                    </button>
+                  </div>
 
-                  <div class="w-full text-center">
-                    <p class="mt-2 md:mt-6">By continuing, you agreeing to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
+                  <div class="w-full text-center text-sm">
+                    <p class="">By continuing, you agreeing to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
                   </div>
                 </div>
               { :else if currentPage == "register" } 
                 <div class="items-center text-center">
                   <input bind:value={data.username} id="username" class="appearance-none w-full py-2 px-3 border border-dashed" type="text" placeholder="username">
-                  <button on:click={(e) => {
-                    proceed("register");
-                  }} class="m-6 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    Register
-                  </button>
-
-                  <div class="w-full flex justify-center">
-                    <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
+                  
+                  <div class="w-full flex justify-center items-center">
+                    <p class="m-6 w-full text-dark" style="cursor: pointer;" on:click={(e) => {
                       containerLoading = true;
                       
                       currentPage = "login";
@@ -342,6 +380,16 @@
                         containerLoading = false;
                       }, 350)
                     }}>Go back</p>
+
+                    <button on:click={(e) => {
+                      proceed("register");
+                    }} class="m-6 w-full bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                      Register
+                    </button>
+                  </div>
+
+                  <div class="w-full text-center text-sm">
+                    <p class="mt-2 md:mt-6">By registering, you agreeing to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
                   </div>
                 </div>
               { :else if currentPage == "pincode" }
@@ -356,7 +404,7 @@
 
                   <button on:click={(e) =>{
                     proceed("pincode");
-                  }} class="my-4 bg-transparent hover:bg-gray-900 text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
+                  }} class="my-4 w-full bg-transparent hover:bg-gray-900 text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
                     Login
                   </button>
 
@@ -462,6 +510,15 @@
                 </div>
 
                 <p>Pigeon Messenger - is a messenger to rule them all! Now you needen't to switch between different web-messengers. Now all your chats will be in one place, without any switching!</p>
+              </div>
+
+              <div class="my-4">
+                <div class="flex items-center">
+                  <img src="icons/grid.svg" style="width: 1.8em;" alt="pigeon logo">
+                  <h1 class="ml-2 text-lg font-bold">user apps</h1>
+                </div>
+
+                <p>Huge number of other applications created by other people! They can be quite interesting, but also there can be a lot of them!</p>
               </div>
             </div>
           { /if }
