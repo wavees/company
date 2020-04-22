@@ -243,7 +243,7 @@
       </div>
     { /if }
 
-    <div style="width: 100%; height: 100vh; overflow: hidden" class="{ callback.error != "NotFound" ? "bg-gray-100" : "" } flex justify-center items-center">
+    <div style="background-image: url('background.png'); background-size: cover; background-position: center center; width: 100%; height: 100vh; overflow: hidden" class="{ callback.error != "NotFound" ? "bg-gray-100" : "" } flex justify-center items-center">
       { #if callback.error == "NotFound" }
         <div style="width: 100%; height: 100vh" class="flex flex-col justify-center items-center">
           <p class="text-2xl text-semibold">Not found</p>
@@ -534,6 +534,21 @@
           </button>
         </div>
       { /if }
+
+    <!-- FOOTER -->
+    <div class="w-full flex justify-between px-4 absolute inset-x-0 bottom-0">
+      <p class="logotype text-xl" style="font-weight: 600;">Wavees</p>
+
+      <div class="flex text-sm">
+        <p class="mx-2">Projects</p>
+        <p class="mx-2">About</p>
+        <p class="mx-2">Contact</p>
+      </div>
+      <!-- <p>Legal information</p> -->
+      <!-- <div id="line" class="logotype line_okay ml-2 mr-2" style="width: 2.2px; height: 2.2em; backgroundColor: #424242"></div> -->
+      <!-- <p class="logotype text-3xl">Auth</p> -->
+    </div>
+
     </div>
   </main>
 </div>
