@@ -49,7 +49,7 @@
   };
 
   let currentPage = "login";
-  let headerText = $_("loginPage.title.email", { default: "Enter your email" });
+  let headerText = 1;
   let containerLoading = false;
   let data = {};
   let user = {};
@@ -95,14 +95,14 @@
               data.exists = true;
 
               currentPage = "pincode";
-              headerText = $_("loginPage.title.pincode", { default: "Write your pincode" });
+              headerText = 2;
             
               loading.state = false;
             } else {
               data.exists = false;
                 
               currentPage = "register";
-              headerText = $_("loginPage.title.username", { default: "Write your username" });
+              headerText = 3
 
               loading.state = false;
             }
@@ -126,11 +126,11 @@
         if (response.exists == false) {
           // Регистрация пользователя
           currentPage = "register";
-          headerText = $_("loginPage.title.username", { default: "Write your username" })
+          headerText = 3;
         } else {
           // Пользователю надо вписать пинкод
           currentPage = "pincode";
-          headerText = $_("loginPage.title.pincode", { default: "Write your pincode" });
+          headerText = 2;
         };
         setTimeout(() => {
           containerLoading = false;
@@ -171,7 +171,7 @@
           }, 250);
         } else {
           currentPage = "pincode";
-          headerText = $_("loginPage.title.checkEmail", { default: "Check your email" });
+          headerText = 4;
         }
       })
       .catch((error) => {
@@ -196,14 +196,14 @@
       .then((data) => {
         if (data.error) {
           if (data.error == "InvalidPassword") {
-            headerText = $_("loginPage.error.invalidPincode", { default: "Invalid pincode, try again" })
+            headerText = 6;
           };
         } else {
           // Сохраняем это всё в сессию...
           cookies.set('token', data.token)
 
           currentPage = "redirect";
-          headerText = $_("loginPage.title.redirect", { default: "Should we proceed?" });
+          headerText = 5;
         };
 
         setTimeout(() => {
@@ -295,7 +295,7 @@
                     containerLoading = true;
                       
                     currentPage = "login";
-                    headerText = $_("loginPage.title.email");
+                    headerText = 1;
                     
                     error = null;
 
@@ -359,7 +359,21 @@
               </div> -->
               { #if currentPage != "redirect" }
                 <div class="w-full mb-6 md:mb-12 flex flex-col justify-center items-center" style="font-size: 1.025em;">
-                  <h1 class="text-2xl">{headerText}</h1>
+                  <h1 class="text-2xl">
+                    { #if headerText == 1 }
+                      {$_("loginPage.title.email", { default: "Write your email" })}
+                    { :else if headerText == 2 }
+                      {$_("loginPage.title.pincode", { default: "Write your pincode" })}
+                    { :else if headerText == 3 }
+                      {$_("loginPage.title.username", { default: "Write your username" })}
+                    { :else if headerText == 4 }
+                      {$_("loginPage.title.checkEmail", { default: "Check your email" })}
+                    { :else if headerText == 5 }
+                      {$_("loginPage.title.redirect", { default: "Should we proceed?" })}
+                    { :else if headerText == 6 }
+                      {$_("loginPage.errors.InvalidPincode", { default: "Invlid pincode. Try again" })}
+                    { /if }
+                  </h1>
                   <p>{$_("loginPage.application.continue", { default: "to continue to" })} <a href="google.com" class="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">{callback.name == null ? $_("loginPage.application.unknown", { default: "Unknown Application" }) : callback.name}</a></p>
                 </div>
               { /if }
@@ -392,7 +406,7 @@
                       containerLoading = true;
                       
                       currentPage = "login";
-                      headerText = $_("loginPage.title.email");
+                      headerText = 1;
                     
                       cookies.remove('login-email');
                       updateAccount();
@@ -434,7 +448,7 @@
                       containerLoading = true;
                       
                       currentPage = "login";
-                      headerText = $_("loginPage.title.email");
+                      headerText = 1;
                     
                       cookies.remove('login-email');
                       updateAccount();
@@ -488,7 +502,7 @@
                       containerLoading = true;
                       
                       currentPage = "login";
-                      headerText = $_("loginPage.title.email");
+                      headerText = 1;
                     
                       cookies.remove('token');
                       cookies.remove('login-email');

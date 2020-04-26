@@ -14,6 +14,31 @@
 
       "more": "Learn more",
       "register": "📮 Register for updates"
+    },
+
+    "projects": {
+      "title": "Our projects",
+
+      "toSite": "Go to site",
+      "more": "Learn more",
+
+      "list": {
+        "bokkr": {
+          "title": "bokkr",
+          "subtitle": "E-books and comics of a new level.",
+          "description": "bokkr is a service for interactive books and comics. It is a fully experimental service that is still under development. We don't know what we will do, how we will do it, but we really hope for your ideas! We will turn any idea you have into reality!"
+        },
+        "pigeon": {
+          "title": "pigeon messenger",
+          "subtitle": "Pigeon Messenger is a messenger to rule them all",
+          "description": "pigeon messenger is also quite an experimental project. In this project we want to connect all the well-known messengers and social networks into one. We want to connect them, not something else. We hope that we can do something..."
+        }, 
+        "unicorn": {
+          "title": "Unicorn Social",
+          "subtitle": "Social network driven by community. Literally.",
+          "description": "Unicorn Social is a social network that its users 'develop'. It is likely to be available soon. How does it work? Every 4 days, the developers of the service choose three ideas from the users, and they do it! And yes, even you can leave your idea behind, and perhaps it will become a reality! P.S. We execute absolutely any ideas, no matter what they would be."
+        }
+      }
     }
   },
   "loginPage": {
