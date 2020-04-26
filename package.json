@@ -1,10 +1,10 @@
 {
-  "name": "sapper-sliders",
-  "description": "sapper-sliders",
-  "version": "0.0.1",
+  "name": "wv-frontend",
+  "description": "Wavees frontend application",
+  "version": "1.0.0",
   "scripts": {
     "dev": "sapper dev",
-    "build": "sapper build --legacy",
+    "build": "npx tailwindcss build src/styles/entry.css -o static/global.css && sapper build --legacy",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
     "styles:build": "npx tailwindcss build src/styles/entry.css -o static/global.css"
@@ -17,6 +17,7 @@
     "polka": "next",
     "session-file-store": "^1.4.0",
     "sirv": "^0.4.0",
+    "svelte-i18n": "^3.0.3",
     "tailwindcss": "^1.2.0"
   },
   "devDependencies": {
@@ -25,6 +26,8 @@
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime": "^7.0.0",
+    "@rollup/plugin-json": "^4.0.3",
+    "@rollup/plugin-replace": "^2.3.2",
     "eslint": "^6.3.0",
     "eslint-plugin-svelte3": "^2.7.3",
     "npm-run-all": "^4.1.5",

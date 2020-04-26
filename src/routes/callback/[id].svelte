@@ -1,6 +1,23 @@
+<!-- 
+  ВНИМАНИЕ
+
+  ! ХУЁВЫЙ КОД !
+  ! ХУЁВЫЙ КОД !
+  ! ХУЁВЫЙ КОД !
+  ! ХУЁВЫЙ КОД !
+  ! ХУЁВЫЙ КОД !
+
+  Зато работает)0)0))))0
+  
+  Спасибо за внимание
+ -->
+
 <script>
   // Импортим модули
   import { fade } from 'svelte/transition';
+  import { _ } from "svelte-i18n";
+
+  import Footer from "../../components/Footer.svelte";
 
   import { stores } from "@sapper/app";
   import { goto } from "@sapper/app";
@@ -32,7 +49,7 @@
   };
 
   let currentPage = "login";
-  let headerText = "Enter your email";
+  let headerText = $_("loginPage.title.email", { default: "Enter your email" });
   let containerLoading = false;
   let data = {};
   let user = {};
@@ -78,14 +95,14 @@
               data.exists = true;
 
               currentPage = "pincode";
-              headerText = "Write your pincode";
+              headerText = $_("loginPage.title.pincode", { default: "Write your pincode" });
             
               loading.state = false;
             } else {
               data.exists = false;
                 
               currentPage = "register";
-              headerText = "Write your username";
+              headerText = $_("loginPage.title.username", { default: "Write your username" });
 
               loading.state = false;
             }
@@ -109,11 +126,11 @@
         if (response.exists == false) {
           // Регистрация пользователя
           currentPage = "register";
-          headerText = "Write your username"
+          headerText = $_("loginPage.title.username", { default: "Write your username" })
         } else {
           // Пользователю надо вписать пинкод
           currentPage = "pincode";
-          headerText = "write your pincode";
+          headerText = $_("loginPage.title.pincode", { default: "Write your pincode" });
         };
         setTimeout(() => {
           containerLoading = false;
@@ -137,11 +154,11 @@
         if (data.error) {
           switch (data.error) {
             case "WrongEmail":
-              error = "Wrong email, please, try again.";
+              error = $_("loginPage.errors.wrongEmail", { default: "Wrong email, please, try again" });
 
               break;
             case "ServerError":
-              error = "ServerError. Please, try again.";
+              error = $_("loginPage.error.serverError", { default: "Server Error. Please, try again." });
               
               break;
 
@@ -154,7 +171,7 @@
           }, 250);
         } else {
           currentPage = "pincode";
-          headerText = "check email and write your pincode";
+          headerText = $_("loginPage.title.checkEmail", { default: "Check your email" });
         }
       })
       .catch((error) => {
@@ -179,14 +196,14 @@
       .then((data) => {
         if (data.error) {
           if (data.error == "InvalidPassword") {
-            headerText = "invalid pincode. Try again"
+            headerText = $_("loginPage.error.invalidPincode", { default: "Invalid pincode, try again" })
           };
         } else {
           // Сохраняем это всё в сессию...
           cookies.set('token', data.token)
 
           currentPage = "redirect";
-          headerText = "read carefully";
+          headerText = $_("loginPage.title.redirect", { default: "Should we proceed?" });
         };
 
         setTimeout(() => {
@@ -229,6 +246,10 @@
   2. Запись найдена, всё хорошо.
  -->
 
+<svelte:head>
+  <title>Wavees | Auth</title>
+</svelte:head>
+
 <div style="overflow: hidden; width: 100%; height: 100vh;">
   <!-- <Userbar applicationSlug="acc" /> -->
 
@@ -246,12 +267,12 @@
     <div style="background-image: url('background.png'); background-size: cover; background-position: center center; width: 100%; height: 100vh; overflow: hidden" class="{ callback.error != "NotFound" ? "bg-gray-100" : "" } flex justify-center items-center">
       { #if callback.error == "NotFound" }
         <div style="width: 100%; height: 100vh" class="flex flex-col justify-center items-center">
-          <p class="text-2xl text-semibold">Not found</p>
-          <p class="text-sm text-center max-w-md">Requested content could not be found. You should double-check that the data is spelled correctly.</p>
+          <p class="text-2xl text-semibold">{$_("loginPage.errors.notFound.title", { default: "Not Found" })}</p>
+          <p class="text-sm text-center max-w-md">{$_("loginPage.errors.notFound.subtitle", { default: "Requested content could not be found. You should double-check that the data is spelled correctly." })}</p>
           <button on:click={(e) => {
             goto('/');
           }} class="mt-4 bg-transparent hover:bg-blue-500 hover:text-white text-base text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-            Go home
+            {$_("loginPage.home", { default: "Go home" })}
           </button>
         </div>
       { :else if callback.error == null }
@@ -274,7 +295,7 @@
                     containerLoading = true;
                       
                     currentPage = "login";
-                    headerText = "please, login";
+                    headerText = $_("loginPage.title.email");
                     
                     error = null;
 
@@ -285,7 +306,7 @@
                       containerLoading = false;
                     }, 350)
                   }} class="m-6 w-full bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    Back to Login
+                    {$_("loginPage.toLogin", { default: "Back to login" })}
                   </button>
                 </div>
               </div>
@@ -337,9 +358,9 @@
                 </div>
               </div> -->
               { #if currentPage != "redirect" }
-                <div class="max-w-sm text-center mb-6 md:mb-12" style="font-size: 1.025em;">
+                <div class="w-full mb-6 md:mb-12 flex flex-col justify-center items-center" style="font-size: 1.025em;">
                   <h1 class="text-2xl">{headerText}</h1>
-                  <p>to continue to <a href="google.com" class="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">{callback.name == null ? "Unknown Application" : callback.name}</a></p>
+                  <p>{$_("loginPage.application.continue", { default: "to continue to" })} <a href="google.com" class="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">{callback.name == null ? $_("loginPage.application.unknown", { default: "Unknown Application" }) : callback.name}</a></p>
                 </div>
               { /if }
 
@@ -350,16 +371,16 @@
                   
                   <div class="flex w-full justify-center items-center">
                     <p class="m-6 text-dark w-full" style="cursor: pointer;" on:click={(e) => {
-                    }}>Last used emails</p>
+                    }}>{$_("loginPage.usedEmails ", { default: "Last used emails" })}</p>
                     <button on:click={(e) => {
                       proceed("login");
                     }} class="m-6 w-full bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                      Continue
+                      {$_("loginPage.continue", { default: "Continue" })}
                     </button>
                   </div>
 
                   <div class="w-full text-center text-sm">
-                    <p class="">By continuing, you agreeing to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
+                    <p class="">{$_("loginPage.userAgreement", { default: "By continuing, you agreeing to the User Agreement." })}</p>
                   </div>
                 </div>
               { :else if currentPage == "register" } 
@@ -371,7 +392,7 @@
                       containerLoading = true;
                       
                       currentPage = "login";
-                      headerText = "please, login";
+                      headerText = $_("loginPage.title.email");
                     
                       cookies.remove('login-email');
                       updateAccount();
@@ -384,12 +405,12 @@
                     <button on:click={(e) => {
                       proceed("register");
                     }} class="m-6 w-full bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                      Register
+                      {$_("loginPage.register", { default: "Register" })}
                     </button>
                   </div>
 
                   <div class="w-full text-center text-sm">
-                    <p class="mt-2 md:mt-6">By registering, you agreeing to the <a href="google.com" style="text-decoration: none; color: #FF9800; border-bottom: 1px dotted #FF5722">User Agreement</a>.</p>
+                    <p class="mt-2 md:mt-6">{$_("loginPage.userAgreement", { default: "By continuing, you agreeing to the User Agreement." })}</p>
                   </div>
                 </div>
               { :else if currentPage == "pincode" }
@@ -405,7 +426,7 @@
                   <button on:click={(e) =>{
                     proceed("pincode");
                   }} class="my-4 w-full bg-transparent hover:bg-gray-900 text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    Login
+                    {$_("loginPage.login", { default: "Login" })}
                   </button>
 
                   <div class="w-full flex justify-between">
@@ -413,7 +434,7 @@
                       containerLoading = true;
                       
                       currentPage = "login";
-                      headerText = "please, login";
+                      headerText = $_("loginPage.title.email");
                     
                       cookies.remove('login-email');
                       updateAccount();
@@ -421,10 +442,10 @@
                       setTimeout(() => {
                         containerLoading = false;
                       }, 350)
-                    }}>Use different account</p>
+                    }}>{$_("loginPage.differentAccount", { default: "Use different account" })}</p>
 
                     <p class="text-dark" style="cursor: pointer;">
-                      Forgot pincode?
+                      {$_("loginPage.forgotPincode", { default: "Forgot pincode?" })}
                     </p>
                   </div>
                 </div>
@@ -455,7 +476,7 @@
                   <button on:click={(e) => {
                     proceed("redirect");
                   }} class="my-4 bg-transparent hover:bg-blue-500 hover:text-white text-dark font-semibold hover:text-white py-2 px-4 border border-dashed hover:border-transparent rounded">
-                    I agree
+                    {$_("loginPage.agree", { default: "I agree" })}
                   </button>
 
                   <!-- <div class="text-sm w-full text-center"> -->
@@ -463,11 +484,11 @@
                   <!-- </div> -->
 
                   <div class="mt-4 w-full flex justify-between">
-                    <p class="text-dark" style="cursor: pointer;" on:click={(e) => {
+                    <p class="text-dark mx-4" style="cursor: pointer;" on:click={(e) => {
                       containerLoading = true;
                       
                       currentPage = "login";
-                      headerText = "please, login";
+                      headerText = $_("loginPage.title.email");
                     
                       cookies.remove('token');
                       cookies.remove('login-email');
@@ -477,12 +498,12 @@
                       setTimeout(() => {
                         containerLoading = false;
                       }, 350)
-                    }}>Use different account</p>
+                    }}>{$_("loginPage.differentAccount", { default: "Use different account" })}</p>
 
                     <p on:click={(e) =>{
                       goto('/');
-                    }} class="text-dark" style="cursor: pointer;">
-                      Go to the homepage
+                    }} class="mx-4 text-dark" style="cursor: pointer;">
+                      {$_("loginPage.home", { default: "Go home" })}
                     </p>
                   </div>
                 </div>
@@ -492,7 +513,7 @@
 
           { #if currentPage == "register" }
             <div class="hidden lg:flex flex-col mx-6 max-w-xs text-sm">
-              <h1 class="mb-4 text-xl font-semibold">Register to get access to:</h1>
+              <h1 class="mb-4 text-xl font-semibold">{$_("loginPage.promo.title", { default: "Register to get access to:" })}</h1>
 
               <div class="my-4">
                 <div class="flex">
@@ -500,7 +521,7 @@
                   <h1 class="ml-2 text-lg font-bold">bokkr</h1>
                 </div>
 
-                <p>bokkr - experimental site only for approved comics, books and so on. A lot of experiments and a lot of unforgetable adventures!</p>
+                <p>{$_("loginPage.promo.bokkr")}</p>
               </div>
 
               <div class="my-4">
@@ -509,16 +530,16 @@
                   <h1 class="ml-2 text-lg font-bold">pigeon messenger</h1>
                 </div>
 
-                <p>Pigeon Messenger - is a messenger to rule them all! Now you needen't to switch between different web-messengers. Now all your chats will be in one place, without any switching!</p>
+                <p>{$_("loginPage.promo.pigeon")}</p>
               </div>
 
               <div class="my-4">
                 <div class="flex items-center">
                   <img src="icons/grid.svg" style="width: 1.8em;" alt="pigeon logo">
-                  <h1 class="ml-2 text-lg font-bold">user apps</h1>
+                  <h1 class="ml-2 text-lg font-bold">{$_("loginPage.promo.apps.title", { default: "user apps" })}</h1>
                 </div>
 
-                <p>Huge number of other applications created by other people! They can be quite interesting, but also there can be a lot of them!</p>
+                <p>{$_("loginPage.promo.apps.description")}</p>
               </div>
             </div>
           { /if }
@@ -536,18 +557,7 @@
       { /if }
 
     <!-- FOOTER -->
-    <div class="w-full flex justify-between px-4 absolute inset-x-0 bottom-0">
-      <p class="logotype text-xl" style="font-weight: 600;">Wavees</p>
-
-      <div class="flex text-sm">
-        <p class="mx-2">Projects</p>
-        <p class="mx-2">About</p>
-        <p class="mx-2">Contact</p>
-      </div>
-      <!-- <p>Legal information</p> -->
-      <!-- <div id="line" class="logotype line_okay ml-2 mr-2" style="width: 2.2px; height: 2.2em; backgroundColor: #424242"></div> -->
-      <!-- <p class="logotype text-3xl">Auth</p> -->
-    </div>
+    <Footer />
 
     </div>
   </main>

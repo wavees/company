@@ -1,4 +1,23 @@
 <script>
+  import { onMount } from "svelte";
+  import { _ } from "svelte-i18n";
+
+  import LanguagePicker from "../components/Pickers/LanguagePicker.svelte";
+
+  // import Cookie from "cookie-universal";
+  // const cookies = Cookie();
+
+  // function changeLanguage(lang) {
+  //   if (lang) {
+  //     cookies.set("locale", lang);
+  //     locale.set(lang);
+  //   };
+  // };
+
+  // onMount(() => {
+  //   changeLanguage();
+  // });
+
   function getRandomAvatar() {
     let array = [
       "😀",
@@ -49,28 +68,20 @@
       <!-- Line -->
       <div style="width: 2.2px; height: 1.7em; background: linear-gradient(180deg, rgba(147,100,187,1) 0%, rgba(234,26,126,1) 100%);" class="mx-4"></div>
 
-      <h2 class="text-xl text-semibold">Portal</h2>
+      <h2 class="text-xl text-semibold">{$_("landing.title", { default: "Portal" })}</h2>
     </div>
 
     <div class="hidden md:flex text-sm text-white items-center justify-center">
-      <button class="mx-4">About</button>
-      <button class="mx-4">Projects</button>
-      <button class="mx-4">Contact</button>
+      <button class="mx-4">{$_("landing.header.about", { default: "About" })}</button>
+      <button class="mx-4">{$_("landing.header.projects", { default: "Projects" })}</button>
+      <button class="mx-4">{$_("landing.header.contact", { default: "Contact" })}</button>
 
-      <div class="mx-6 flex">
-        <button>
-          EN
-        </button>
-
-        <div style="width: 2.2px; height: 1.7em; background: #fff" class="mx-2"></div>
-
-        <button>
-          РУ
-        </button>
+      <div class="mx-2 flex">
+        <LanguagePicker />
       </div>
 
       <button class="px-4 py-2 rounded-full bg-white text-blue-600 shadow-xl hover:bg-blue-600 hover:text-white hover:mb-2 hover:shadow-2xl">
-        {getRandomAvatar()} Go to my Account
+        {getRandomAvatar()} {$_("landing.account", { default: "Go to my Account" })}
       </button>
     </div>
   </div>
@@ -79,8 +90,8 @@
   <main style="width: 100%; height: 160vh; z-index: 0;" class="relative flex px-2 md:px-12 lg:px-24">
     <div style="width: 100%; height: 120vh; z-index: 999;" class="flex justify-center md:justify-start items-center">
       <div class="max-w-md">
-        <h1 class="text-5xl">We're trying to make the Internet a little different.</h1>
-        <p>😎 We also have a very cool slogan: "deadline for the faggots."</p>
+        <h1 class="text-5xl">{$_("landing.hero.title", { default: "We're trying to make the Internet a little different." })}</h1>
+        <p>{$_("landing.hero.subtitle", { default: "😎 We also have a very cool slogan: 'deadline for the faggots.'" })}</p>
       
         <!-- Buttons and other shit -->
         <div class="my-4">
@@ -88,10 +99,10 @@
 
           <div class="flex my-4 w-full items-center justify-between">
             <button class="text px-6 py-4">
-              Learn more
+              {$_("landing.hero.more", { default: "Learn more" })}
             </button>
             <button class="px-6 py-4 rounded-full bg-white text-blue-600 shadow-xl hover:bg-blue-600 hover:text-white hover:mb-2 hover:shadow-2xl">
-              📮 Register for updates
+              {$_("landing.hero.register", { default: "📮 Register for updates" })}
             </button>
           </div>
         </div>
