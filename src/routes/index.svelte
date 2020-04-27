@@ -5,11 +5,13 @@
   import LanguagePicker from "../components/Pickers/LanguagePicker.svelte";
   import Footer from "../components/Footer.svelte";
 
+  import ProjectsDropdown from "../components/ProjectsDropdown.svelte";
+
   let projects = [
     "bokkr",
     "pigeon",
     "unicorn"
-  ]
+  ];
 
   function getRandomAvatar() {
     let array = [
@@ -66,10 +68,10 @@
   <script src="js/landingParallax.js"></script>
 </svelte:head>
 
-<div style="overflow-x: hidden; width: 100%; height: 100vh;" class="relative">
+<div style="overflow: hidden; width: 100%; height: 100vh;" class="relative">
   <!-- Header -->
-  <div style="z-index: 1;" class="absolute inset-x-0 top-0 px-2 md:px-12 lg:px-24 w-full py-2 md:py-4 flex items-center justify-center md:justify-between">
-    <div class="hidden md:flex items-center">
+  <div style="z-index: 1;" class="absolute inset-x-0 top-0 px-2 md:px-12 lg:px-24 w-full py-2 md:py-4 flex items-center justify-between">
+    <div class="flex items-center">
       <h1 class="text-2xl text-bold">Wavees</h1>
       
       <!-- Line -->
@@ -78,23 +80,26 @@
       <h2 class="text-xl text-semibold">{$_("landing.title", { default: "Portal" })}</h2>
     </div>
 
-    <div class="hidden md:flex text-sm text-white items-center justify-center">
-      <button class="mx-4">{$_("landing.header.about", { default: "About" })}</button>
-      <button class="mx-4">{$_("landing.header.projects", { default: "Projects" })}</button>
-      <button class="mx-4">{$_("landing.header.contact", { default: "Contact" })}</button>
+    <div class="flex text-sm text-white items-center justify-center">
+      <button class="hidden md:block mx-4">{$_("landing.header.about", { default: "About" })}</button>
+      <button class="hidden md:block mx-4">{$_("landing.header.contact", { default: "Contact" })}</button>
 
-      <div class="mx-2 flex">
+      <div class="mx-2 flex text-black md:text-white">
         <LanguagePicker />
       </div>
 
-      <button class="px-4 py-2 rounded-full bg-white text-blue-600 shadow-xl hover:bg-blue-600 hover:text-white hover:mb-2 hover:shadow-2xl">
-        {getRandomAvatar()} {$_("landing.account", { default: "Go to my Account" })}
-      </button>
+      <div class="hidden md:flex items-center justify-center">
+        <ProjectsDropdown />
+
+        <button class="hidden md:block mx-2 px-4 py-2 rounded-full bg-white text-blue-600 shadow-xl hover:bg-blue-600 hover:text-white hover:mb-2 hover:shadow-2xl">
+          {getRandomAvatar()} {$_("landing.account", { default: "Go to my Account" })}
+        </button>
+      </div>
     </div>
   </div>
   
   <!-- background-size: cover; background-repeat: no-repeat; background-position: center; background-image: url('./background2.png');  -->
-  <main style="width: 100%; height: 160vh; z-index: 0;" class="relative flex px-2 md:px-12 lg:px-24">
+  <main style="width: 100%; height: 160vh; z-index: 0;" class="relative flex px-6 md:px-12 lg:px-24">
     <div style="width: 100%; height: 120vh; z-index: 999;" class="flex justify-center md:justify-start items-center">
       <div id="about" class="max-w-md">
         <h1 class="text-5xl">{$_("landing.hero.title", { default: "We're trying to make the Internet a little different." })}</h1>
@@ -139,24 +144,24 @@
 
     <!-- "Line" -->
 
-    <div class="w-full inset-x-0 bottom-0 absolute flex justify-center items-center" style="z-index: 3;">
+    <!-- <div class="w-full inset-x-0 bottom-0 absolute flex justify-center items-center" style="z-index: 3;">
       <img src="images/background/1.svg" alt="bg line">
       
       <div class="absolute flex md:mt-12">
         <img src="icons/chevron-down.svg" alt="Chevron Down">
         <h1 class="text-lg">{$_("landing.projects.title", { default: "Our prpjects" })}</h1>
       </div>
-    </div>
+    </div> -->
   </main>
 
   <!-- SECTION: Projects -->
-
+<!-- 
   <section id="projects" class="px-4 md:px-6 bg-gray-100 relative" style="width: 100%; height: 100vh; z-index: 4;">
     <div class="flex flex-wrap justify-center">
       {#each projects as project}
         <div class="flex-grow max-w-sm w-full relative px-4 md:px-6 py-4 mx-2 md:mx-6 my-4 overflow-hidden shadow-lg hover:shadow-2xl bg-white rounded-lg">
           
-          <!-- Header -->
+          Header
           <div>
             <div class="flex flex-col mb-4 items-center justify-center">
               <img src="icons/logo/{project}.svg" style="width: 3em;" alt="{project} logo">
@@ -165,12 +170,12 @@
             <p class="text-sm">{$_(`landing.projects.list.${project}.subtitle`, { default: "Unknown subtitle" })}</p>
           </div>
 
-          <!-- Content -->
+          Content
           <div class="text-base my-4 mb-24 text-center">
             <p>{$_(`landing.projects.list.${project}.description`, { default: "Unknown description" })}</p>
           </div>
 
-          <!-- Footer -->
+          Footer
 
           <div class="w-full px-6 md:px-12 py-6 absolute inset-x-0 bottom-0 flex flex-col justify-center text-center">
             <button class="my-4 px-4 py-2 rounded-full bg-white text-blue-600 shadow-xl hover:bg-blue-600 hover:text-white hover:mb-2 hover:shadow-2xl">
@@ -186,5 +191,5 @@
 
     <Footer />
   
-  </section>
+  </section> -->
 </div>
