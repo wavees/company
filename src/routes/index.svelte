@@ -2,35 +2,14 @@
   import { onMount } from "svelte";
   import { _ } from "svelte-i18n";
 
-  import LanguagePicker from "../components/Pickers/LanguagePicker.svelte";
   import Footer from "../components/Footer.svelte";
-
-  import ProjectsDropdown from "../components/ProjectsDropdown.svelte";
+  import Header from "../components/Header.svelte";
 
   let projects = [
     "bokkr",
     "pigeon",
     "unicorn"
   ];
-
-  function getRandomAvatar() {
-    let array = [
-      "😀",
-      "🥰",
-      "🤗",
-      "😎",
-      "🤠",
-      "🥳",
-      "🐶",
-      "🐕‍🦺",
-      "🦁",
-      "🦌",
-      "🦅",
-      "🐻"
-    ];
-
-    return array[Math.floor(Math.random() * array.length)];
-  };
 
   function getRandomTitle() {
     let array = [
@@ -63,40 +42,26 @@
   }
 </script>
 
+<!-- 
+  @section Head
+  @description Head of page. It contains title, it includes some
+  usefull scripts and so on.
+ -->
 <svelte:head>
   <title>Wavees Group - {getRandomTitle()}</title>
   <script src="js/landingParallax.js"></script>
 </svelte:head>
 
+<!-- 
+  @section Body
+  @description Body of this page
+
+  @warning Some element of body are hard-coded. And thats very bad.
+ -->
+
 <div style="overflow: hidden; width: 100%; height: 100vh;" class="relative">
   <!-- Header -->
-  <div style="z-index: 1;" class="absolute inset-x-0 top-0 px-2 md:px-12 lg:px-24 w-full py-2 md:py-4 flex items-center justify-between">
-    <div class="flex items-center">
-      <h1 class="text-2xl text-bold">Wavees</h1>
-      
-      <!-- Line -->
-      <div style="width: 2.2px; height: 1.7em; background: linear-gradient(180deg, rgba(147,100,187,1) 0%, rgba(234,26,126,1) 100%);" class="mx-4"></div>
-
-      <h2 class="text-xl text-semibold">{$_("landing.title", { default: "Portal" })}</h2>
-    </div>
-
-    <div class="flex text-sm text-white items-center justify-center">
-      <button class="hidden md:block mx-4">{$_("landing.header.about", { default: "About" })}</button>
-      <button class="hidden md:block mx-4">{$_("landing.header.contact", { default: "Contact" })}</button>
-
-      <div class="mx-2 flex text-black md:text-white">
-        <LanguagePicker />
-      </div>
-
-      <div class="hidden md:flex items-center justify-center">
-        <ProjectsDropdown />
-
-        <button class="hidden md:block mx-2 px-4 py-2 rounded-full bg-white text-blue-600 shadow-xl hover:bg-blue-600 hover:text-white hover:mb-2 hover:shadow-2xl">
-          {getRandomAvatar()} {$_("landing.account", { default: "Go to my Account" })}
-        </button>
-      </div>
-    </div>
-  </div>
+  <Header />
   
   <!-- background-size: cover; background-repeat: no-repeat; background-position: center; background-image: url('./background2.png');  -->
   <main style="width: 100%; height: 160vh; z-index: 0;" class="relative flex px-6 md:px-12 lg:px-24">

@@ -20,16 +20,30 @@
       "title": "Our services"
     }
   },
-  "loginPage": {
-    "promo": {
-      "title": "Register to get access to:",
-      
+  
+  "languagePicker": {
+    "language": "Language"
+  },
+
+  "titles": {
+    "portal": "Portal"
+  },
+
+  "projects": {
+    "promotions": {
       "bokkr": "bokkr - experimental site only for approved comics, books and so on. A lot of experiments and a lot of unforgetable adventures!",
       "pigeon": "Pigeon Messenger - is a messenger to rule them all! Now you needen't to switch between different web-messengers. Now all your chats will be in one place, without any switching!",
-      "apps": {
+      "paradise": "",
+      "userApps": {
         "title": "user apps",
         "description": "Huge number of other applications created by other people! They can be quite interesting, but also there can be a lot of them!"
       }
+    }
+  },
+
+  "loginPage": {
+    "promo": {
+      "title": "Register to get access to:"
     },
 
     "userAgreement": "By continuing, you agreeing to the User Agreement.",

@@ -28,7 +28,6 @@
   const cookies = Cookie();
 
   import Spinner from "../../components/Spinner.svelte";
-  import Userbar from "../../components/Userbar.svelte";
   // import Userbar from "../../components/Userbar.svelte";
   // import { fade } from 'svelte/transition';
 

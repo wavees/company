@@ -24,6 +24,15 @@
       "soon": "Скоро..."
     }
   },
+
+  "titles": {
+    "portal": "Портал"
+  },
+
+  "languagePicker": {
+    "language": "Язык сайта"
+  },
+
   "loginPage": {
     "promo": {
       "title": "Зарегистрируйтесь, что бы получить доступ к:",

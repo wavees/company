@@ -23,13 +23,13 @@
   { #if dropdown }
     <button on:click={(e) => {
       drop()
-    }} class="text-white mx-2 p-2 rounded-lg hover:shadow-2xl">
+    }} class="text-white p-2 rounded-lg hover:shadow-2xl">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </button>
   { :else }
     <button on:click={(e) => {
       drop()
-    }} class="text-white mx-2 p-2 rounded-lg hover:shadow-2xl">
+    }} class="text-white p-2 rounded-lg hover:shadow-2xl">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
     </button>
 
