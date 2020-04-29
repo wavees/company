@@ -1,8 +1,8 @@
 steps:
-  # build the container image
+  # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'europe-west4-docker.pkg.dev/$PROJECT_ID/images/wavees-landing:$COMMIT_SHA', '.']
-  # push the container image to Artifact Registry
+  # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'europe-west4-docker.pkg.dev/$PROJECT_ID/images/wavees-landing:$COMMIT_SHA']
   # Deploy container image to Cloud Run
