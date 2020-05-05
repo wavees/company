@@ -56,7 +56,7 @@
   @section Body
   @description Body of this page
 
-  @warning Some element of body are hard-coded. And thats very bad.
+  @warning Some elements are hard-coded. And that's very bad.
  -->
 
 <div style="overflow: hidden; width: 100%; height: 100vh;" class="relative">

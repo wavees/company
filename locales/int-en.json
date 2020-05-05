@@ -29,6 +29,11 @@
     "portal": "Portal"
   },
 
+  "worldRegions": {
+    "int": "International",
+    "eu": "Europe"
+  },
+
   "projects": {
     "promotions": {
       "bokkr": "bokkr - experimental site only for approved comics, books and so on. A lot of experiments and a lot of unforgetable adventures!",

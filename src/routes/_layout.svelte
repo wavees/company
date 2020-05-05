@@ -13,8 +13,12 @@
   let loading = true;
 
   function checkLanguage() {
-    if (cookies.get('locale')) {
-      locale.set(cookies.get('locale'));
+    let currentLocale = cookies.get('locale');
+
+    if (currentLocale) {
+      if ($locales.includes(currentLocale)) {
+        locale.set(currentLocale);
+      }
     };
 
     setTimeout(() => {
