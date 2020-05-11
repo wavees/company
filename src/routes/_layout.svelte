@@ -7,6 +7,9 @@
 
   import { locale, locales } from "svelte-i18n"
 
+  import { api } from '../config/global.js';
+  import { user } from '../config/user.js';
+
   import Cookie from "cookie-universal";
   const cookies = Cookie();
 
@@ -26,8 +29,14 @@
     }, 150);
   };
 
+  function checkUser() {
+    let token = cookies.get('token');
+    user.setToken(token);
+  }
+
   onMount(() => {
     checkLanguage();
+    checkUser();
   });
 </script>
 

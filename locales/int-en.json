@@ -1,4 +1,13 @@
 {
+  "states": {
+    "frozen": "Frozen"
+  },
+  
+  "account": {
+    "wip": "Work in progress.",
+    "home": "Back home"
+  },
+  
   "landing": {
     "title": "Portal",
     "header": {
@@ -9,11 +18,26 @@
     "account": "Go to my Account",
 
     "hero": {
-      "title": "We're trying to make the Internet a little different.",
-      "subtitle": "😎 We also have a very cool slogan: 'deadline for the faggots.'",
+      "title": "The magic is in simplicity.",
+      "subtitle": "😎 Scroll to see more cool things about us.",
 
       "more": "Learn more",
       "register": "📮 Register for updates"
+    },
+
+    "simplicity": {
+      "tag": "Our philosophy",
+      "title": "We like simplicity.",
+
+      "subtitle": "And we will share it with you.",
+      "text": "All people are complicated, and that's a problem. We want to share our simplicity with you. That's why every service we provide is incredibly simple and intuitive."
+    },
+    "beauty": {
+      "tag": "Our philosophy",
+      "title": "We love beauty.",
+
+      "subtitle": "And we don't mind sharing it with you.",
+      "text": "Simplicity is good, isn't it? Well, what if we add Beauty to this Simplicity? That's how you get the perfect product! And that's what we're trying to achieve."
     },
 
     "projects": {

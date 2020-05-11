@@ -9,6 +9,8 @@
   // it.
   import { languages } from "../../config/global.js";
 
+  import moment from "moment";
+
   // Let's count different parts of world based
   // on our languages files!
   let regions = [];
@@ -40,7 +42,9 @@
   // Function for changing localization.
   // Pretty straightforward, isn't it?
   function changeLocale(lang) {
-    cookies.set('locale', lang);
+    cookies.set('locale', lang, {
+      expires: moment().add(1, 'y').toDate()  
+    });
     locale.set(lang);
   };
 

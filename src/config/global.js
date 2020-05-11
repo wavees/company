@@ -13,6 +13,28 @@ readable({
   url: "wavees.co.vu"
 });
 
+export const landingPages =
+readable([
+  {
+    id: "index",
+    url: "/",
+
+    color: "#ffbd3b"
+  },
+  {
+    id: "philosophy/simplicity",
+    url: "/philosophy/simplicity",
+
+    color: "#8ce08c"
+  },
+  {
+    id: "philosophy/beauty",
+    url: "philosophy/beauty",
+
+    color: "#9ef5ee"
+  }
+]);
+
 //
 // @explanation
 // Config object, that consists url's and keys to access
@@ -24,7 +46,7 @@ readable({
   defaultAvatar: "https://cdn.dribbble.com/users/45488/screenshots/9084073/media/f889543c2e901048f8da2d9915d0bf37.jpg",
 
   // API URL and version parameters
-  url: "https://wv-core.glitch.me", 
+  url: "https://api.wavees.co.vu", 
   version: 1
 });
 
@@ -70,6 +92,13 @@ readable([
     // @values: "promotion", "noPromotion", null
     type: null,
 
+    // Project state. It allows us to show state of each project
+    // in project list.
+
+    // @values: "wip", "active" ...
+    state: "WIP",
+    stateColor: "bg-orange-300",
+
     // Different descriptions for different
     // pages. 
     description: { 
@@ -92,7 +121,24 @@ readable([
     //
   },
   {
+    name: "Timey",
+
+    state: "BETA",
+    stateColor: "bg-red-400",
+    
+    url: "timey.wavees.co.vu",
+    icon: "logo/timey",
+    type: "noPromotion",
+    description: {
+      promotion: ""
+    }
+  },
+  {
     name: "Pigeon",
+    
+    state: "WIP",
+    stateColor: "bg-orange-300",
+
     url: "@pigeon",
     icon: "logo/pigeon",
     description: {
@@ -101,6 +147,10 @@ readable([
   },
   {
     name: "Unicorn",
+
+    state: "WIP",
+    stateColor: "bg-orange-300",
+
     url: "@unicorn",
     icon: "logo/unicorn",
     description: {
@@ -109,6 +159,10 @@ readable([
   },
   {
     name: "Paradise",
+
+    state: "@states.frozen",
+    stateColor: "bg-teal-400",
+    
     url: "paradiser.ml",
     icon: "logo/paradise",
     type: "noPromotion",

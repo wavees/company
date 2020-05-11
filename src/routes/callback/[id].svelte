@@ -18,6 +18,7 @@
   import { _ } from "svelte-i18n";
 
   import Footer from "../../components/Footer.svelte";
+  import moment from "moment";
 
   import { stores } from "@sapper/app";
   import { goto } from "@sapper/app";
@@ -120,7 +121,9 @@
       .then((response) => response.json())
       .then((response) => {
         // Обрабатываем данные
-        cookies.set('login-email', data.email);
+        cookies.set('login-email', data.email, {
+          expires: moment().add(1, 'y').toDate()
+        });
 
         if (response.exists == false) {
           // Регистрация пользователя
@@ -199,7 +202,9 @@
           };
         } else {
           // Сохраняем это всё в сессию...
-          cookies.set('token', data.token)
+          cookies.set('token', data.token, {
+            expires: moment().add(1, 'y').toDate()
+          })
 
           currentPage = "redirect";
           headerText = 5;

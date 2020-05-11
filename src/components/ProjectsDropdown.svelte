@@ -18,6 +18,8 @@
       dropdown = true;
     }
   };
+
+  export let color = "#fff";
 </script>
 
 <!-- 
@@ -33,7 +35,7 @@
     <button on:click={(e) => {
       drop()
     }} class="text-white p-2 rounded-lg hover:shadow-2xl">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </button>
   { :else }
     <!-- 
@@ -43,7 +45,7 @@
     <button on:click={(e) => {
       drop()
     }} class="text-white p-2 rounded-lg hover:shadow-2xl">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
     </button>
 
   { /if }
@@ -96,7 +98,18 @@
                   window.location.href = `http://${project.url}`;
                 }
               }
-            }} style="cursor: pointer;" class="dropdown flex flex-col justify-center items-center p-4 my-2 w-24 h-24 rounded-lg hover:bg-gray-100">
+            }} style="cursor: pointer;" class="dropdown relative flex flex-col justify-center items-center p-4 my-2 w-24 h-24 rounded-lg hover:bg-gray-100">
+              
+              { #if project.state != null }
+                <span class="absolute top-0 right-0 px-1 text-xs {project.stateColor != null ? project.stateColor : "bg-gray-100"} rounded-full">
+                  { #if project.state.split('').includes('@') }
+                    {$_(project.state.split('@')[1], { default: "undefined" })}
+                  { :else }
+                    {project.state}
+                  { /if }
+                </span>
+              { /if }
+              
               <img style="width: 2.1em; height: 2.1em;" src="./icons/{project.icon}.svg" alt="{project.icon} logo">
               
               <!-- If project name contains "@" - that we need to
