@@ -5,8 +5,6 @@
   import { onMount } from "svelte";
   import { _ } from "svelte-i18n";
 
-  import { user } from "../../config/user.js";
-
   import Footer from "../../components/Footer.svelte";
   import Header from "../../components/Header.svelte";
   import PagePicker from "../../components/Pickers/PagePicker.svelte";
@@ -15,7 +13,7 @@
   onMount(() => {
     setTimeout(() => {
       scrollEnabled = true;
-    }, 1000);
+    }, 250);
   });
 </script>
 

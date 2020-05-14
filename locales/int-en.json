@@ -1,8 +1,4 @@
 {
-  "states": {
-    "frozen": "Frozen"
-  },
-  
   "account": {
     "wip": "Work in progress.",
     "home": "Back home"
@@ -11,8 +7,6 @@
   "landing": {
     "title": "Portal",
     "header": {
-      "about": "About",
-      "projects": "Projects",
       "contact": "Contact"
     },
     "account": "Go to my Account",
@@ -45,68 +39,17 @@
     }
   },
   
-  "languagePicker": {
-    "language": "Language"
+  "projectDropdown": {
+    "other": "And so on...",
+    "more": "See more on Space"
   },
 
-  "titles": {
-    "portal": "Portal"
+  "languagePicker": {
+    "language": "Language"
   },
 
   "worldRegions": {
     "int": "International",
     "eu": "Europe"
-  },
-
-  "projects": {
-    "promotions": {
-      "bokkr": "bokkr - experimental site only for approved comics, books and so on. A lot of experiments and a lot of unforgetable adventures!",
-      "pigeon": "Pigeon Messenger - is a messenger to rule them all! Now you needen't to switch between different web-messengers. Now all your chats will be in one place, without any switching!",
-      "paradise": "",
-      "userApps": {
-        "title": "user apps",
-        "description": "Huge number of other applications created by other people! They can be quite interesting, but also there can be a lot of them!"
-      }
-    }
-  },
-
-  "loginPage": {
-    "promo": {
-      "title": "Register to get access to:"
-    },
-
-    "userAgreement": "By continuing, you agreeing to the User Agreement.",
-    
-    "forgotPincode": "Forgot pincode?",
-    "differentAccount": "Use different account",
-
-    "login": "Login",
-    "register": "Register",
-    "continue": "Continue",
-    
-    "usedEmails": "Last used emails",
-    
-    "application": {
-      "continue": "to continue to",
-      "unknown": "Unknown Application"
-    },
-    "title": {
-      "email": "Enter your email",
-      "pincode": "Write your pincode",
-      "username": "Write your username",
-      "checkEmail": "Check your email",
-      "redirect": "Should we proceed?"
-    },
-    "errors": {
-      "invalidPincode": "Invalid pincode, try again",
-      "wrongEmail": "Wrong email, please, try again",
-      "serverError": "Server Error. Please, try again",
-      "notFound": {
-        "title": "Not Found",
-        "subtitle": "Requested content could not be found. You should double-check that the data is spelled correctly."
-      }
-    },
-    "home": "Go home",
-    "toLogin": "Back to login"
   }
 }

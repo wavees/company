@@ -5,8 +5,6 @@
   import { onMount } from "svelte";
   import { _ } from "svelte-i18n";
 
-  import { user } from "../config/user.js";
-
   import Footer from "../components/Footer.svelte";
   import Header from "../components/Header.svelte";
   import Spinner from "../components/Spinner.svelte";
@@ -58,33 +56,6 @@
       <div id="about" class="max-w-2xl text-center flex flex-col justify-center items-center">
         <h1 class="text-5xl">{$_("landing.hero.title", { default: "The magic is in simplicity" }).toUpperCase()}</h1>
         <p>{$_("landing.hero.subtitle", { default: "😎 Scroll to see more cool things about us." })}</p>
-      
-        <!-- Buttons and other shit -->
-        <!-- <div class="my-4 w-full py-6 relative"> -->
-
-          <!-- { #if !$user.loaded }
-            <div class="w-full h-full flex justify-center items-center">
-              <Spinner size="25" />
-            </div>
-          { :else }
-            { #if $user.username != null }
-              <div class="w-full h-full flex justify-center items-center">
-                <div>
-                  <span class="rounded-full" style="background-image: url({$user.avatar}); background-size: cover; background-position: center center; width: 3.5vw; height: 3.5vw;" alt="Avatar"></span>
-                
-                  <div class="mx-4">
-                    <h2 class="text-xl text-semibold">{$user.username}</h2>
-                    <button on:click={(e) => {
-                      goto('/logout');
-                    }} style="color: #7953f6;">
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              </div>
-            { /if }
-          { /if } -->
-        <!-- </div> -->
       </div>
     </div>
 

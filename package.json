@@ -10,6 +10,7 @@
     "styles:build": "npx tailwindcss build src/styles/entry.css -o static/global.css"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "compression": "^1.7.1",
     "cookie-universal": "^2.1.3",
     "express": "^4.17.1",

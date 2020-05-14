@@ -9,28 +9,6 @@
   import LanguagePicker from "./Pickers/LanguagePicker.svelte";
   import ProjectsDropdown from "./ProjectsDropdown.svelte";
 
-  // Function for getting random "avatars". I dunno why
-  // I done this, but this looks very funny. Just returns
-  // random emoji, that's all
-  function getRandomAvatar() {
-    let array = [
-      "😀",
-      "🥰",
-      "🤗",
-      "😎",
-      "🤠",
-      "🥳",
-      "🐶",
-      "🐕‍🦺",
-      "🦁",
-      "🦌",
-      "🦅",
-      "🐻"
-    ];
-
-    return array[Math.floor(Math.random() * array.length)];
-  };
-
   export let color = "#fff";
 </script>
 
@@ -45,10 +23,6 @@
   </div>
 
   <div class="flex text-sm items-center justify-center">
-    <button on:click={(e) => {
-      window.location.href = "https://twitter.com/wavees_hq";
-    }} class="hidden md:block mx-4">{$_("landing.header.contact", { default: "Contact" })}</button>
-
     <div class="mx-2 flex">
       <LanguagePicker color={color} />
     </div>
@@ -57,9 +31,9 @@
       <ProjectsDropdown color={color} />
 
       <button on:click={(e) => {
-        goto('/account');
+        window.location.href = "https://twitter.com/wavees_hq";
       }} class="hidden md:block mx-2 px-4 py-2 rounded-full bg-white text-blue-600 shadow-xl hover:bg-blue-600 hover:text-white hover:mb-2 hover:shadow-2xl">
-        {getRandomAvatar()} {$_("landing.account", { default: "Go to my Account" })}
+        📣 {$_("landing.header.contact", { default: "Contact" })}
       </button>
     </div>
   </div>

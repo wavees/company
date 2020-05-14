@@ -5,6 +5,8 @@
   // Import projects array and general settings from global config.
   import { projects, general } from '../config/global.js';
 
+  projects.updateProjects(4);
+
   // Variable that'll show: is our dropdown is closed
   // or opened.
   let dropdown;
@@ -98,19 +100,8 @@
                   window.location.href = `http://${project.url}`;
                 }
               }
-            }} style="cursor: pointer;" class="dropdown relative flex flex-col justify-center items-center p-4 my-2 w-24 h-24 rounded-lg hover:bg-gray-100">
-              
-              { #if project.state != null }
-                <span class="absolute top-0 right-0 px-1 text-xs {project.stateColor != null ? project.stateColor : "bg-gray-100"} rounded-full">
-                  { #if project.state.split('').includes('@') }
-                    {$_(project.state.split('@')[1], { default: "undefined" })}
-                  { :else }
-                    {project.state}
-                  { /if }
-                </span>
-              { /if }
-              
-              <img style="width: 2.1em; height: 2.1em;" src="./icons/{project.icon}.svg" alt="{project.icon} logo">
+            }} style="cursor: pointer;" class="dropdown relative flex flex-col justify-center items-center p-4 my-2 w-24 h-24 rounded-lg hover:bg-gray-100">            
+              <img style="width: 2.1em; height: 2.1em;" src="{project.icon}" alt="{project.icon} logo">
               
               <!-- If project name contains "@" - that we need to
                 get the translation for this title in lozalization files. -->
@@ -124,14 +115,15 @@
         { /each }
       </div>
 
-      <!-- 
-        @section Projects for developers
-        Here we'll list our projects, and were made
-        for developers... Oops, nothing in here!
-       -->
-      <p class="my-4 underline">{$_("landing.projects.developers", { default: "For developers" })}</p>
+      <p class="text-sm">{$_("projectDropdown.other", { default: "And so on..." })}</p>
 
-      <p class="text-sm">{$_("landing.projects.soon", { default: "Soon..." })}</p>
+      <div class="dropdown my-6">
+        <button on:click={(e) => {
+          window.location.href = "https://wavees.co.vu";
+        }} class="mx-2 px-4 py-2 rounded-full bg-blue-600 text-white shadow-xl hover:bg-white hover:text-blue-600 hover:mb-2 hover:shadow-2xl">
+          🚀 {$_("projectDropdown.more", { default: "See more on Space" })}
+        </button>
+      </div>
     </div>
   { /if }
 </div>
