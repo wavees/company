@@ -119,7 +119,7 @@
 
       <div class="dropdown my-6">
         <button on:click={(e) => {
-          window.location.href = "https://wavees.co.vu";
+          window.location.href = "https://wavees.co.vu/?focus=projects";
         }} class="mx-2 px-4 py-2 rounded-full bg-blue-600 text-white shadow-xl hover:bg-white hover:text-blue-600 hover:mb-2 hover:shadow-2xl">
           🚀 {$_("projectDropdown.more", { default: "See more on Space" })}
         </button>
