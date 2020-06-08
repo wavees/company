@@ -32,7 +32,7 @@
   usefull scripts and so on.
  -->
 <svelte:head>
-  <title>Wavees | Portal</title>
+  <title>🧑‍🤝‍🧑 Wavees Company</title>
 </svelte:head>
 
 <!-- 

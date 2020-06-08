@@ -31,13 +31,21 @@
   });
 </script>
 
-{ #if $isLoading || loading }
-  <div in:fade out:fade class="absolute flex justify-center items-center bg-white" style="width: 100%; height: 100vh; z-index: 999;">
-    <div class="flex flex-col justify-center items-center">
-      <Spinner />
-      <p class="text-sm">Loading locales...</p>
-    </div>
-  </div>
+<svelte:head>
+	<link rel="stylesheet" href="./fonts/Junegull/junegull.css">
+</svelte:head>
+
+{ #if $isLoading || loading } 
+	<div style="height: 100vh; z-index: 2;" class="absolute bg-white w-full flex justify-center items-center">
+		<!-- Branding -->
+		<div class="flex flex-col justify-center items-center">
+			<div class="flex mb-6 items-center">
+				<h1 style="font-family: Junegull" class="text-2xl text-bold">wavees</h1>
+			</div>
+
+			<Spinner size="25" />
+		</div>
+	</div>
 { /if }
 
 <div>

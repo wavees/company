@@ -84,33 +84,35 @@
 
       <div class="dropdown flex flex-wrap items-center justify-center">
         { #each $projects as project}
-          { #if project.type != "promotion" }
-            <!-- 
-              About on:click event: I don't fucking know
-              why I do this in this way. Just forget about
-              it.
-             -->
-            <div on:click={(e) => {
-              if (project.url.split('').includes("@")) {
-                window.location.href = `https://${project.url.split('@')[1]}.${$general.url}`;
-              } else {
-                if (project.url.split(':').includes('http')) {
-                  window.location.href = project.url;
+          { #if project != null }
+            { #if project.type != "promotion" }
+              <!-- 
+                About on:click event: I don't fucking know
+                why I do this in this way. Just forget about
+                it.
+              -->
+              <div on:click={(e) => {
+                if (project.url.split('').includes("@")) {
+                  window.location.href = `https://${project.url.split('@')[1]}.${$general.url}`;
                 } else {
-                  window.location.href = `http://${project.url}`;
+                  if (project.url.split(':').includes('http')) {
+                    window.location.href = project.url;
+                  } else {
+                    window.location.href = `http://${project.url}`;
+                  }
                 }
-              }
-            }} style="cursor: pointer;" class="dropdown relative flex flex-col justify-center items-center p-4 my-2 w-24 h-24 rounded-lg hover:bg-gray-100">            
-              <img style="width: 2.1em; height: 2.1em;" src="{project.icon}" alt="{project.icon} logo">
-              
-              <!-- If project name contains "@" - that we need to
-                get the translation for this title in lozalization files. -->
-              { #if project.name.split('').includes("@") }
-                <p class="text-sm">{$_(project.name.replace("@", ""), { default: "Unknown application" })}</p>
-              { :else }
-                <p class="text-sm">{project.name}</p>
-              { /if }
-            </div>
+              }} style="cursor: pointer;" class="dropdown relative flex flex-col justify-center items-center p-4 my-2 w-24 h-24 rounded-lg hover:bg-gray-100">            
+                <img style="width: 2.1em; height: 2.1em;" src="{project.icon}" alt="{project.icon} logo">
+                
+                <!-- If project name contains "@" - that we need to
+                  get the translation for this title in lozalization files. -->
+                { #if project.name.split('').includes("@") }
+                  <p class="text-sm">{$_(project.name.replace("@", ""), { default: "Unknown application" })}</p>
+                { :else }
+                  <p class="text-sm">{project.name}</p>
+                { /if }
+              </div>
+            { /if }
           { /if }
         { /each }
       </div>
