@@ -1,8 +1,8 @@
 {
 	"background_color": "#ffffff",
 	"theme_color": "#333333",
-	"name": "Wavees Portal",
-	"short_name": "Wavees Portal",
+	"name": "Wavees Company",
+	"short_name": "company",
 	"display": "minimal-ui",
 	"start_url": "/",
 	"icons": [

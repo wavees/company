@@ -7,47 +7,29 @@
 
 	%sapper.base%
 
-	<link rel='stylesheet' href='global.css'>
-	<link rel="stylesheet" href="fonts/Gilroy/stylesheet.css">
 	<link rel='manifest' href='manifest.json'>
+	<link rel='icon' type='image/png' href='favicon.png'>
 
+	<!-- Sapper generates a <style> tag containing critical CSS
+	     for the current page. CSS for the rest of the app is
+	     lazily loaded when it precaches secondary pages -->
 	%sapper.styles%
 
-	<style>
-		* {
-      font-family: "Gilroy", sans-serif;
-    }
-
-		@font-face {
-			font-family: Gotham-Thin;
-			src: url('fonts/Gotham-Thin.otf');
-		}
-
-		@font-face {
-			font-family: Holiday;
-			src: url('fonts/Holiday.otf');
-		}
-
-		/* width */
-		::-webkit-scrollbar {
-			width: 8px;
-			height: 8px;
-		}
-		
-		/* Handle */
-		::-webkit-scrollbar-thumb {
-			background: #D2D2D7;
-			border-radius: 10px;
-		}
-	</style>
-
+	<!-- This contains the contents of the <svelte:head> component, if
+	     the current page has one -->
 	%sapper.head%
 </head>
 <body>
+	<!-- The application will be rendered inside this element,
+	     because `src/client.js` references it -->
 	<div id='sapper'>%sapper.html%</div>
 
-	%sapper.scripts%
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 
-	<script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.2.0/dist/simpleParallax.min.js"></script>
+	<!-- Sapper creates a <script> tag containing `src/client.js`
+	     and anything else it needs to hydrate the app and
+	     initialise the router -->
+	%sapper.scripts%
 </body>
 </html>

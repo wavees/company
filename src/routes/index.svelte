@@ -1,81 +1,77 @@
 <script>
-  import { goto } from "@sapper/app";
-  import { slide, fade } from "svelte/transition";
 
-  import { onMount } from "svelte";
-  import { _ } from "svelte-i18n";
-
-  import Footer from "../components/Footer.svelte";
-  import Header from "../components/Header.svelte";
-  import Spinner from "../components/Spinner.svelte";
-  import PagePicker from "../components/Pickers/PagePicker.svelte";
-
-  let backgrounds = [
+  // Small Header Links array.
+  let links = [
     {
-      src: "2.svg",
-      size: "2"
+      url: "https://wavees.ml",
+      title: "Our Projects"
     },
     {
-      src: "2.svg",
-      size: "2"
+      type: "logotype"
     },
     {
-      src: "2.svg",
-      size: "2"
-    }  
-  ];
+      url: "https://github.com/wavees",
+      title: "Get In Touch"
+    }
+  ]
 </script>
 
-<!-- 
-  @section Head
-  @description Head of page. It contains title, it includes some
-  usefull scripts and so on.
- -->
 <svelte:head>
-  <title>🧑‍🤝‍🧑 Wavees Company</title>
+  <title>Wavees Company - Explained</title>
+  <link rel="stylesheet" href="./fonts/Junegull/junegull.css">
 </svelte:head>
 
-<!-- 
-  @section Body
-  @description Body of this page
+<!-- Site's main content -->
+<main class="w-full relative">
 
-  @warning Some elements are hard-coded. And that's very bad.
- -->
-
-<div on:wheel={(e) => {
-  if (e.deltaY >= 0) {
-    goto('/philosophy/simplicity');
-  };
-}} style="width: 100%; height: 100vh; overflow: hidden;" class="relative">
   <!-- Header -->
-  <Header />
-  
-  <!-- background-size: cover; background-repeat: no-repeat; background-position: center; background-image: url('./background2.png');  -->
-  <main style="width: 100%; height: 100vh; z-index: 0;" class="relative flex px-6 md:px-12 lg:px-24">
-    <div style="width: 100%; height: 120vh; z-index: 999;" class="flex justify-center items-center">
-      <div id="about" class="max-w-2xl text-center flex flex-col justify-center items-center">
-        <h1 class="text-5xl">{$_("landing.hero.title", { default: "The magic is in simplicity" }).toUpperCase()}</h1>
-        <p>{$_("landing.hero.subtitle", { default: "😎 Scroll to see more cool things about us." })}</p>
-      </div>
-    </div>
+  <div class="absolute inset-x-0 top-0 py-4 md:py-6 w-full flex justify-center items-center">
 
-    <!-- Footer dots -->
-    <PagePicker />
+    <!-- Links -->
+    {#each links as link}
 
-    <!--Static Backgrounds ahoy -->
-    <div class="absolute top-0 right-0" style="z-index: 2; margin: -45rem; margin-right: -8rem;">
-      <div style="width: 55em; height: 55em; background: #ffbd3b;" class="rounded-full"></div>
-    </div>
-
-    <div class="absolute bottom-0 left-0" style="z-index: 2; margin: -25rem; margin-left: -2rem;">
-      <div style="width: 35em; height: 35em; background: #fe295c;" class="rounded-full"></div>
-    </div>
-
-    <!-- Randomly generated backgrounds -->
-    {#each backgrounds as item}
-      <div class="background absolute inset-0" style="z-index: 1; margin: {Math.floor(Math.random() * 41)}em {Math.floor(Math.random() * 101)}em;">
-        <img src="./images/background/{item.src}" alt="Background image" style="width: {item.size}em; height: {item.size}em;">
-      </div>
+      <!-- 
+        Let's now determine the "type"
+        of our link. -->
+      {#if link.type == "logotype"}
+        <div class="mx-6 text-center">
+          <h1 style="font-family: Junegull;" class="text-xl">wavees</h1>
+          <p class="text-gray-700 text-sm">company</p>
+        </div>
+      { :else }
+        <a class="mx-4 text-sm hidden md:block" href="{link.url}">{link.title}</a>
+      {/if}
     {/each}
-  </main>
-</div>
+
+  </div>
+
+  <!-- Simple Hero (showing off some our projects) -->
+  <div class="w-full h-100vh flex justify-center items-center bg-gray-100">
+    <!-- Some Text -->
+    <div style="" class="w-full md:w-2/4 lg:w-1/3 px-4 md:px-0 flex flex-col justify-center items-center text-center">
+      <h1 class="text-2xl font-semibold">We're just getting started.</h1>
+      <p class="text-gray-700 text-sm">There are only two developers on our team so far... That's why things are going so slowly. If you got here (how did you even find us?), you should just forget about what you just saw.</p>
+
+      <p class="my-6">But if you insist...</p>
+
+      <!-- Buttons -->
+      <div class="flex">
+        <!-- Github Button -->
+        <button on:click={(e) => window.location.href = "https://github.com/wavees"} class="px-6 py-2 rounded-full bg-blue-400 text-white flex">
+          <span style="width: 1.2rem;" class="mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          </span>
+
+          <p>Our Github</p>
+        </button>
+
+        <!-- <button class="">
+        
+        </button> -->
+      </div>
+    </div>
+    <!-- Some Projects -->
+
+  </div>
+
+</main>
